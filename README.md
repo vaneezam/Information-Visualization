@@ -13,10 +13,10 @@ Step 3: Download D3 framework from : https://d3js.org/<br/>
 Step 4: Extract the downloaded d3 file<br/>
 Steo 5: Save the code files and the extracted D3 file into the same folder <br/>
 Step 6: type the command: 'cmd', in the directory of the folder in Step 5 (as shown in images below)<br/>
-<div>
-![image](https://user-images.githubusercontent.com/85564228/121782626-eb334880-cbc3-11eb-98b6-c197de3aba94.png)<br/>
- </div>
-![image](https://user-images.githubusercontent.com/85564228/121782647-11f17f00-cbc4-11eb-95ee-1d6a5702dd22.png)<br/>
+
+![directory of the folder](https://user-images.githubusercontent.com/85564228/121782626-eb334880-cbc3-11eb-98b6-c197de3aba94.png)
+
+![type cmd](https://user-images.githubusercontent.com/85564228/121782647-11f17f00-cbc4-11eb-95ee-1d6a5702dd22.png)
 Step 7: Run the command : npm install in the opeaned CLI, once all the packages are installed run the command: 'http-server -o'<br/>
 A list of avaliable visualizations would appear and the desired may be choosed.<br/>
 
