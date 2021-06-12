@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+
+	<!-- D3.js JS -->
+	<script type="text/javascript" src="d3.min.js"></script>
+
+	<title>Visualization Libraries - D3.js</title>
+</head>
+
+
+<body>
+	<style>
+		/* .bar {
+			fill: steelblue;
+		} */
+
+		.bar:hover {
+			fill: rgb(255, 137, 157);
+		}
+
+		.icd{
+			margin-left: 15%;
+			background-color: #ffbb00;
+			border: solid #ffbb00;
+		}
+
+		.kar{
+			background-color: #f44336;
+			border: solid #f44336;
+		}
+
+		.lah{
+			background-color: #4CAF50;
+			border: solid #4CAF50;
+		}
+
+		.pes{
+			background-color: #008CBA;
+			border: solid #008CBA;
+		}
+
+		input{
+			padding: 10px 24px;
+			border-radius: 4px;
+			margin-bottom: 30px;
+			margin-right: 2%;
+			margin-left: 2%;
+		}
+		body{
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		h3{
+			font-size: 30px;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			text-align: center;
+		}
+
+		svg {
+			margin-left:auto; 
+			margin-right:auto; 
+			display:block;
+		}
+
+		div{
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.container{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-right: 10%;
+			height: 100%;
+		}
+		
+	</style>
+
+	<h3>Monthly Average Air Quality Index of cities</h3>
+
+	<div>
+		<div class = "container">
+
+			<input class ="icd" type="button" value="Islamabad" onclick="ShowIslamabad()" />
+
+			<input class = "kar" type="button" value="Karachi" onclick="ShowKarachi()" />
+
+			<input class = "lah" type="button" value="Lahore" onclick="ShowLahore()" />
+
+			<input class = "pes" type="button" value="Peshawar" onclick="ShowPeshawar()" />
+			
+		</div>
+	</div>
+
+	<br>
+
+	<svg></svg>
+	
+
+	<script>
+		var width = 800;
+		var height = 400;
+		var margin = { top: 20, right: 10, bottom: 40, left: 40 };
+		var animation_time = 1000;
+		
+		var svg = d3.select('svg')
+			.attr("width", width)
+			.attr("height", height)
+			// .style("background", "lightgray")
+			.append('g');
+
+		var yScale = d3.scaleLinear()
+			.range([height - margin.bottom, margin.top]);
+
+		var xScale = d3.scaleBand()
+			.range([margin.left, width - margin.right])
+			.padding(0.3);
+
+		var original_data;
+
+		d3.csv('aqi.csv')
+			.then(function (data) {
+				
+				original_data = data;
+
+				var max_value = d3.max(data, function (d, i) { return Number(d.AvgAqi) });
+				var min_value = 0;
+
+				yScale.domain([min_value, max_value]);
+				var data = data.filter(function (d) { return d.Number && d.City == "Islamabad"; });
+				xScale.domain(data.map(function (d) { return d.Number; }));
+
+				svg.append('g')
+					.attr("class", "x-axis")
+					.attr("transform", "translate(0," + (height - margin.bottom) + ")")
+					.call(d3.axisBottom(xScale));
+
+				svg.append('g')
+					.attr("class", "y-axis")
+					.attr("transform", "translate(" + margin.left + ",0)")
+					.call(d3.axisLeft(yScale));
+
+				svg.selectAll(".bar")
+					.data(data)
+					.enter()
+					.append("rect")
+					.attr("class", "bar")
+					.attr("fill", function(d) { return "#ffbb00";})
+					.attr("x", function (d) { return xScale(d.Number); })
+					.attr("y", function (d) { return yScale(Number(d.AvgAqi)); })
+					.attr("width", xScale.bandwidth())
+					.attr("height", function (d) {
+						return height - margin.bottom - yScale(Number(d.AvgAqi));
+					});
+
+				svg.append("text")
+					.text("Months")
+					.attr("y", height - 5)
+					.attr("x", width / 2);
+
+				svg.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("class", "y-label")
+					.text("AQI")
+					.attr("y", 12)
+					.attr("x", -(height / 2))
+					.attr("text-anchor", "middle");
+
+				svg.selectAll(".label")
+					.data(data)
+					.enter()
+					.append("text")
+					.attr("class", "label")
+					.text(function (d) { return d.AvgAqi; })
+					.attr("x", function (d) { return xScale(d.Number) + xScale.bandwidth() / 2 - this.getBBox().width / 2; })
+					.attr("y", function (d) { return yScale(Number(d.AvgAqi)) - 5; });
+
+				svg.call(d3.zoom()
+					.on("zoom", zoomed));
+
+			});
+
+		function zoomed(event) {
+			svg.attr("transform", event.transform);
+		}
+
+		function ShowKarachi() {
+			
+			var _data = original_data.filter(function (d) { return d.Number && d.City == "Karachi"; });
+			xScale.domain(_data.map(function (d) { return d.Number; }));
+		
+			svg.select(".x-axis")
+				.transition().duration(animation_time)
+				.call(d3.axisBottom(xScale));
+
+
+			svg.selectAll(".bar")
+				.data(_data)
+				.transition().duration(animation_time)
+				.attr("x", function (d) { return xScale(d.Number); })
+				.attr("y", function (d) { return yScale(Number(d.AvgAqi)); })
+				.attr("fill", function(d) { return "red";})
+				.attr("width", xScale.bandwidth())
+				.attr("height", function (d) {
+					return height - margin.bottom - yScale(Number(d.AvgAqi));
+				});
+			
+
+			svg.selectAll(".label")
+				.data(_data)
+				.transition().duration(animation_time)
+				.text(function (d) { return d.AvgAqi; })
+				.attr("x", function (d) { return xScale(d.Number) + xScale.bandwidth() / 2 - this.getBBox().width / 2; })
+				.attr("y", function (d) { return yScale(Number(d.AvgAqi)) - 5; });
+
+		}
+
+		function ShowIslamabad() {
+			
+			var _data = original_data.filter(function (d) { return d.Number && d.City == "Islamabad"; });
+			xScale.domain(_data.map(function (d) { return d.Number; }));
+		
+			svg.select(".x-axis")
+				.transition().duration(animation_time)
+				.call(d3.axisBottom(xScale));
+
+
+			svg.selectAll(".bar")
+				.data(_data)
+				.transition().duration(animation_time)
+				.attr("x", function (d) { return xScale(d.Number); })
+				.attr("y", function (d) { return yScale(Number(d.AvgAqi)); })
+				.attr("fill", function(d) { return "#ffbb00";})
+				.attr("width", xScale.bandwidth())
+				.attr("height", function (d) {
+					return height - margin.bottom - yScale(Number(d.AvgAqi));
+				});
+
+			svg.selectAll(".label")
+				.data(_data)
+				.transition().duration(animation_time)
+				.text(function (d) { return d.AvgAqi; })
+				.attr("x", function (d) { return xScale(d.Number) + xScale.bandwidth() / 2 - this.getBBox().width / 2; })
+				.attr("y", function (d) { return yScale(Number(d.AvgAqi)) - 5; })
+				;
+
+		}
+
+		function ShowLahore() {
+			
+			var _data = original_data.filter(function (d) { return d.Number && d.City == "Lahore"; });
+			xScale.domain(_data.map(function (d) { return d.Number; }));
+		
+			svg.select(".x-axis")
+				.transition().duration(animation_time)
+				.call(d3.axisBottom(xScale));
+
+
+			svg.selectAll(".bar")
+				.data(_data)
+				.transition().duration(animation_time)
+				.attr("x", function (d) { return xScale(d.Number); })
+				.attr("y", function (d) { return yScale(Number(d.AvgAqi)); })
+				.attr("fill", function(d) { return "green";})
+				.attr("width", xScale.bandwidth())
+				.attr("height", function (d) {
+					return height - margin.bottom - yScale(Number(d.AvgAqi));
+				});
+
+			svg.selectAll(".label")
+				.data(_data)
+				.transition().duration(animation_time)
+				.text(function (d) { return d.AvgAqi; })
+				.attr("x", function (d) { return xScale(d.Number) + xScale.bandwidth() / 2 - this.getBBox().width / 2; })
+				.attr("y", function (d) { return yScale(Number(d.AvgAqi)) - 5; });
+
+		}
+
+		function ShowPeshawar() {
+			
+			var _data = original_data.filter(function (d) { return d.Number && d.City == "Peshawar"; });
+			xScale.domain(_data.map(function (d) { return d.Number; }));
+		
+			svg.select(".x-axis")
+				.transition().duration(animation_time)
+				.call(d3.axisBottom(xScale));
+
+
+			svg.selectAll(".bar")
+				.data(_data)
+				.transition().duration(animation_time)
+				.attr("x", function (d) { return xScale(d.Number); })
+				.attr("y", function (d) { return yScale(Number(d.AvgAqi)); })
+				.attr("fill", function(d) { return "blue";})
+				.attr("width", xScale.bandwidth())
+				.attr("height", function (d) {
+					return height - margin.bottom - yScale(Number(d.AvgAqi));
+				});
+
+			svg.selectAll(".label")
+				.data(_data)
+				.transition().duration(animation_time)
+				.text(function (d) { return d.AvgAqi; })
+				.attr("x", function (d) { return xScale(d.Number) + xScale.bandwidth() / 2 - this.getBBox().width / 2; })
+				.attr("y", function (d) { return yScale(Number(d.AvgAqi)) - 5; });
+		}
+
+	</script>
+</body>
+
+</html>

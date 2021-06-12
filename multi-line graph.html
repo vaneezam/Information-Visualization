@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+
+<head>
+<title>Daily AQI Comparison</title>
+<script src="https://d3js.org/d3.v4.js"> </script>
+</head>
+<style>
+
+.legend {
+    font-size: 25px;
+    font-weight: bold;
+    text-anchor: middle;
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: left;           
+  width: 100px;                  
+  height: 48px;                 
+  padding: 2px;             
+  font: 12px sans-serif;        
+  background: lightsteelblue;   
+  border: 0px;      
+  border-radius: 8px;           
+  pointer-events: none;         
+}
+body{
+	font-family: Arial, Helvetica, sans-serif;
+}
+.header {
+  text-align: center;
+}
+</style>
+<body>
+    <div class="header"><h1>Daily AQI Comparison</h1></div>
+    <div id="chart"></div>
+<script>
+    var margin = {top: 50, right: 30, bottom: 70, left: 60},
+        width = 1300 - margin.left - margin.right,
+        height = 550 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+    var svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+        
+    var div = d3.select("body").append("div")   
+                .attr("class", "tooltip")               
+                .style("opacity", 0);  
+    
+    
+    d3.csv("AQI Data.csv" , function (data) {
+ 
+        var y = d3.scaleLinear().range([height, 0]).domain([0, 500]);
+        svg.append("g").call(d3.axisLeft(y));
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("AQI");  
+      
+        data.forEach(function(d) { 
+            d.Date = d3.timeParse("%Y-%m-%dT%H:%M:%S")(d.Date);
+            d.Count = +d.Count;   
+            d.City = d.City; 
+            return d; });
+                                    
+        var x = d3.scaleTime().range([0, width]).domain(d3.extent(data, function(d) {  return  d.Date; }));
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x)
+            .tickFormat(d3.timeFormat('%m-%Y')))
+            .selectAll("text")
+            .attr("y", -3)
+            .attr("x", -49)
+            .style("font-size", "12px")
+            .attr("font-family", "Saira")
+            .attr("transform", "rotate(270)")
+            .style("text-anchor", "start");
+       
+        svg.append("text")             
+           .attr("transform","translate(" + (width/2) + " ," +(height + margin.top +15) + ")")
+           .style("text-anchor", "middle")
+           .text("Date");
+        
+        var sumstat = d3.nest() 
+                        .key(function(d) { return d.City;})
+                        .entries(data);
+
+                        
+        var res = sumstat.map(function(d){ return d.key }) // list of group names
+        //var color = d3.scaleOrdinal().domain(res).range(['#e41a1c','#377eb8','#4daf4a','#984ea3']) 
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+        legendSpace = width/sumstat.length; 
+
+        var line = d3.line()
+          .x(function(d) { return x(d.Date) })
+          .y(function(d) { return y(+d.Count) })
+        svg.selectAll("myLines")
+          .data(sumstat)
+          .enter()
+          .append("path")
+            .attr("class", function(d){ return d.key })
+            .attr("d", function(d){ return line(d.values) } )
+            .attr("stroke", function(d){ return color(d.key) })
+            .style("stroke-width", 2)
+            .style("fill", "none")
+            .on("mouseout", function(d){
+              currentWidth = d3.selectAll("." + d.key).style("stroke-width")
+              d3.selectAll("." + d.key).transition().style("stroke-width", currentWidth == 2 ? 4:2)
+            })
+            .on("mouseover", function(d){
+              currentWidth = d3.selectAll("." + d.key).style("stroke-width")
+              d3.selectAll("." + d.key).transition().style("stroke-width", currentWidth == 4 ? 2:4)
+            })
+           
+
+        svg
+          .selectAll("myLegend")
+          .data(sumstat)
+          .enter()
+            .append('g')
+            .append("text")
+              .attr('x', function(d,i){ return (legendSpace/2)+i*legendSpace})
+              .attr('y', (margin.top/2)-50)
+              .attr("class", "legend")
+              .text(function(d) { return d.key; })
+              .style("fill", function(d){ return color(d.key) })
+              .style("font-size", 15)
+            .on("click", function(d){
+              // is the element currently visible ?
+              currentOpacity = d3.selectAll("." + d.key).style("opacity")
+              // Change the opacity: from 0 to 1 or from 1 to 0
+              d3.selectAll("." + d.key).transition().style("opacity", currentOpacity == 1 ? 0.1:1)
+            })
+            .on("mouseover", function(d) { 
+            d3.select(this).style("cursor", "pointer").style("text-decoration", "underline")})
+            .on("mouseout", function(d) { 
+            d3.select(this).style("text-decoration", "none")})
+            
+            svg.selectAll("myLegend")
+          .data(sumstat)
+          .enter().append('rect')
+                .attr("x", function(d,i){ return 80+i*legendSpace})  // space legend
+                .attr("y",  (margin.top/2)-67.5)
+                .attr('width', 25)
+                .attr('height', 25)
+                .style('fill', function(d) { 
+                        return d.color = color(d.key); });
+            
+
+            
+
+    var formatDate = d3.timeFormat('%d/%m/%Y');
+    
+    svg.selectAll("dot")    
+        .data(data)         
+        .enter().append("circle")                               
+        .attr("r", 5)       
+        .attr("cx", function(d) { return x(d.Date); })       
+        .attr("cy", function(d) { return y(d.Count); })
+        .style("opacity", 0)   
+        .on("mouseover", function(d) { 
+          
+            d3.select(this).style("cursor", "pointer")     
+            div.transition()        
+                .duration(0)      
+                .style("opacity", 19);      
+            div .html("City: " +d.City+"<br/>"+"Date: " + formatDate(d.Date) + "<br/>"  +"AQI: " + d.Count)  
+                .style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY - 28) + "px");    
+            })                  
+        .on("mouseout", function(d) { 
+            div.transition()        
+                .duration(0)      
+                .style("opacity", 0);   
+        });    
+    })
+   
+</script>
+
+</body>
+</html>
+
+
+
