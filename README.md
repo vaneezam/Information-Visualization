@@ -28,14 +28,14 @@ Step 6: type the command: 'cmd', in the directory of the folder in Step 5 (as sh
 Step 7: Run the command : npm install in the opeaned CLI, once all the packages are installed run the command: 'http-server -o'<br/>
 A list of avaliable visualizations would appear and the desired may be choosed.<br/>
 
+## Project Screenshots
+![Screenshot (212)](https://user-images.githubusercontent.com/85564228/121782067-444dad00-cbc1-11eb-8e7e-65f426bbe3e8.png)
+![image](https://user-images.githubusercontent.com/85564228/121940926-122a7f80-cd68-11eb-9a30-1af4cf85558c.png)
+![image](https://user-images.githubusercontent.com/85564228/121940972-21113200-cd68-11eb-9006-d289d56cbb40.png)<br/>
+
 ## Group Members
 Noor us Sabah<br/>
 Maryam Javed<br/>
 Manahil Haseeb<br/>
 Syeda Rabiya Arshad<br/>
-
-## Project Screenshots
-![Screenshot (212)](https://user-images.githubusercontent.com/85564228/121782067-444dad00-cbc1-11eb-8e7e-65f426bbe3e8.png)
-![image](https://user-images.githubusercontent.com/85564228/121940926-122a7f80-cd68-11eb-9a30-1af4cf85558c.png)
-![image](https://user-images.githubusercontent.com/85564228/121940972-21113200-cd68-11eb-9006-d289d56cbb40.png)
 
