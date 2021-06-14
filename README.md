@@ -36,6 +36,6 @@ Syeda Rabiya Arshad<br/>
 
 ## Project Screenshots
 ![Screenshot (212)](https://user-images.githubusercontent.com/85564228/121782067-444dad00-cbc1-11eb-8e7e-65f426bbe3e8.png)
-![image](https://user-images.githubusercontent.com/85564228/121940770-e4453b00-cd67-11eb-8ae5-dd42da5be674.png)
-![image](https://user-images.githubusercontent.com/85564228/121940705-d1326b00-cd67-11eb-8191-0a0ecb3a73a2.png)
+![image](https://user-images.githubusercontent.com/85564228/121940926-122a7f80-cd68-11eb-9a30-1af4cf85558c.png)
+![image](https://user-images.githubusercontent.com/85564228/121940972-21113200-cd68-11eb-9006-d289d56cbb40.png)
 
