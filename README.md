@@ -1,6 +1,6 @@
 ### Visualizing the Air Quality of 4 major cities of Pakistan
 
-Air quality is a major concern for people in Pakistan and around the globe. In many industrial and urban areas air pollution is causing damage to humans, plants, animals and ozone layer etc. due to release of harmful gases by various resources. In this project, we visualize the data of air quality of four major cities of Pakistan which include Karachi, Lahore, Islamabad, and Peshawar, the air pollutant for which is, Particulate Matter (PM 2.5). The dataset for the study is sourced from an online repository, collected in the time span ranging from May 2019 to April 2020. Three visualizations namely, Bar chart, Donut chart and Line chart are generated. These interactive visualizations are developed using D3.js and provide essential insights of data according to Year, Month, Day or the severity of air pollution. As per the designed visualizations, there has been a significant increase in air pollution during the end of 2019, whereas during the start of 2020, the air pollution started to decrease. The data set for the project is sourced from :https://opendata.com.pk/dataset/air-quality-index-may-2019-april-2020/resource/decb72cb-1d47-4c2b-8414-33fb01f763d5 <br/>
+Air quality is a major concern for people in Pakistan and around the globe. In many industrial and urban areas air pollution is causing damage to humans, plants, animals and ozone layer etc. due to release of harmful gases by various resources. In this project, we visualize the data of air quality of four major cities of Pakistan which include Karachi, Lahore, Islamabad, and Peshawar, the air pollutant for which is, Particulate Matter (PM 2.5). The dataset for the study is sourced from an online repository, collected in the time span ranging from May 2019 to April 2020. Three visualizations namely, Bar chart, Donut chart and Line chart are generated. These interactive visualizations are developed using D3.js and provide essential insights of data according to Year, Month, Day or the severity of air pollution. As per the designed visualizations, there has been a significant increase in air pollution during the end of 2019, whereas during the start of 2020, the air pollution started to decrease. <br/> The data set for the project is sourced from :https://opendata.com.pk/dataset/air-quality-index-may-2019-april-2020/resource/decb72cb-1d47-4c2b-8414-33fb01f763d5 <br/>
 
 ## Project Architecture
 | Idiom         | Marks         | Channels                                              |
@@ -34,6 +34,7 @@ A list of avaliable visualizations would appear and the desired may be choosed.<
 ![image](https://user-images.githubusercontent.com/85564228/121940972-21113200-cd68-11eb-9006-d289d56cbb40.png)<br/>
 
 ## Group Members
+Vaneeza Mehmood <br/>
 Noor us Sabah<br/>
 Maryam Javed<br/>
 Manahil Haseeb<br/>
