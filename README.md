@@ -31,7 +31,7 @@ A list of avaliable visualizations would appear and the desired may be choosed.<
 ## Project Screenshots
 ![Screenshot (212)](https://user-images.githubusercontent.com/85564228/121782067-444dad00-cbc1-11eb-8e7e-65f426bbe3e8.png)
 ![image](https://user-images.githubusercontent.com/85564228/121940926-122a7f80-cd68-11eb-9a30-1af4cf85558c.png)
-![image](https://user-images.githubusercontent.com/85564228/121940972-21113200-cd68-11eb-9006-d289d56cbb40.png)<br/>
+![image](https://user-images.githubusercontent.com/85564228/122028807-cf0ef180-cde5-11eb-9985-b8207d2180ad.png)<br/>
 
 ## Group Members
 Vaneeza Mehmood <br/>
